@@ -17,3 +17,42 @@ recept-hodnoceni, recept-nazev, recept-popis.
 
 6) Poslední vybraný recept ulož do Local Storage, aby se při novém otevření aplikace načetl.
 */
+
+
+//doplnění dalších receptů do seznamu z pole receptů
+for (let i = 0; i < recepty.length; i++) {
+    let novyRecept = document.createElement('div');
+
+    novyRecept.className = 'recept';
+
+    let fotoReceptu = document.createElement('img');
+    fotoReceptu.className = 'recept-obrazek';
+    fotoReceptu.src = recepty[i].img;
+    fotoReceptu.style.borderRadius = "5px";
+
+    let nazevReceptu = document.createElement('h3');
+    nazevReceptu.className = 'recept-info';
+    nazevReceptu.innerHTML = recepty[i].nadpis;
+    nazevReceptu.style.fontSize = "16px";
+
+    novyRecept.appendChild(fotoReceptu);
+    novyRecept.appendChild(nazevReceptu);
+
+    document.querySelector('#recepty').appendChild(novyRecept);
+}
+
+
+
+
+/*
+
+poleRecepty.forEach((recept) => {
+    recept.addEventListener('click', zobrazRecept);
+});
+
+function zobrazRecept(udalost) {
+    let obrazek = udalost.target;
+    let kalorie = obrazek.dataset.kalorie;
+
+}
+*/
