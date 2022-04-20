@@ -39,6 +39,7 @@ for (let i = 0; i < recepty.length; i++) {
     novyRecept.appendChild(nazevReceptu);
 
     document.querySelector('#recepty').appendChild(novyRecept);
+
 }
 
 
