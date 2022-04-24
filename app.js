@@ -20,10 +20,13 @@ recept-hodnoceni, recept-nazev, recept-popis.
 
 
 //doplnění dalších receptů do seznamu z pole receptů
-for (let i = 0; i < recepty.length; i++) {
-    let novyRecept = document.createElement('div');
 
-    novyRecept.className = 'recept';
+
+for (let i = 0; i < recepty.length; i++) {
+
+    let recept = document.createElement('div');
+    recept.id = 'recept';
+    recept.className = 'recept';
 
     let fotoReceptu = document.createElement('img');
     fotoReceptu.className = 'recept-obrazek';
@@ -35,25 +38,47 @@ for (let i = 0; i < recepty.length; i++) {
     nazevReceptu.innerHTML = recepty[i].nadpis;
     nazevReceptu.style.fontSize = "16px";
 
-    novyRecept.appendChild(fotoReceptu);
-    novyRecept.appendChild(nazevReceptu);
 
-    document.querySelector('#recepty').appendChild(novyRecept);
+    recept.appendChild(fotoReceptu);
+    recept.appendChild(nazevReceptu);
+
+
+
+    document.querySelector('#recepty').appendChild(recept);
+
+
+
+
+
+
 
 }
 
 
 
 
-/*
 
-poleRecepty.forEach((recept) => {
-    recept.addEventListener('click', zobrazRecept);
+
+
+
+
+
+
+
+
+
+let vybranyRecept = document.querySelectorAll('#recept');
+
+
+
+vybranyRecept.forEach((element) => {
+    element.addEventListener('click', zobrazRecept);
 });
 
-function zobrazRecept(udalost) {
-    let obrazek = udalost.target;
-    let kalorie = obrazek.dataset.kalorie;
+
+function zobrazRecept(event) {
+
+    console.log(event.target);
 
 }
-*/
+
