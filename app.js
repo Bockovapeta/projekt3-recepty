@@ -21,26 +21,42 @@ recept-hodnoceni, recept-nazev, recept-popis.
 
 //doplnění dalších receptů do seznamu z pole receptů
 
+let poziceReceptu = 0;
+document.querySelector('#recepty img').src = (recepty[poziceReceptu].img);
+document.querySelector('#recepty h3').innerHTML = recepty[poziceReceptu].nadpis;
 
-for (let i = 0; i < recepty.length; i++) {
 
+
+
+for (let i = 1; i < recepty.length; i++) {
+    poziceReceptu = poziceReceptu + 1;
     let recept = document.createElement('div');
     recept.id = 'recept';
     recept.className = 'recept';
 
     let fotoReceptu = document.createElement('img');
     fotoReceptu.className = 'recept-obrazek';
-    fotoReceptu.src = recepty[i].img;
+    fotoReceptu.src = recepty[poziceReceptu].img;
     fotoReceptu.style.borderRadius = "5px";
 
     let nazevReceptu = document.createElement('h3');
     nazevReceptu.className = 'recept-info';
-    nazevReceptu.innerHTML = recepty[i].nadpis;
+    nazevReceptu.innerHTML = recepty[poziceReceptu].nadpis;
     nazevReceptu.style.fontSize = "16px";
+
+
+
+    let pozice = document.createElement('p');
+    pozice.innerHTML = poziceReceptu;
+    pozice.style.display = 'none';
+    recept.appendChild(pozice);
+
+
 
 
     recept.appendChild(fotoReceptu);
     recept.appendChild(nazevReceptu);
+
 
 
 
@@ -57,16 +73,6 @@ for (let i = 0; i < recepty.length; i++) {
 
 
 
-
-
-
-
-
-
-
-
-
-
 let vybranyRecept = document.querySelectorAll('#recept');
 
 
@@ -76,9 +82,41 @@ vybranyRecept.forEach((element) => {
 });
 
 
-function zobrazRecept(event) {
+function zobrazRecept() {
 
-    console.log(event.target);
+    console.log(this);
 
+}
+
+
+
+
+
+
+
+let button = document.querySelector('button');
+button.onclick = hledejRecept;
+
+function hledejRecept() {
+
+    let hledanyRecept = document.querySelector('input[type="text"]').value;
+
+    console.log(hledanyRecept);
+
+}
+
+
+
+document.querySelector('input').addEventListener('change', filtrujRecept);
+
+function filtrujRecept() {
+    if (('input[type="text"]').value === recepty[poziceReceptu].nadpis) {
+        return true;
+
+    }
+    else {
+        //jinak vymaž recept z adresáře s recepty
+        return false;
+    }
 }
 
