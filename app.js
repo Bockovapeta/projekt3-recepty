@@ -25,27 +25,28 @@ recept-hodnoceni, recept-nazev, recept-popis.
 
 
 // načtení prvního receptu do seznamu z pole receptů
-localStorage.recepty = JSON.stringify(recepty);
-let hodnota = localStorage.recepty;
 
 
-let poziceReceptu = 0;
-document.querySelector('#recepty img').src = (recepty[poziceReceptu].img);
-document.querySelector('#recepty h3').innerHTML = recepty[poziceReceptu].nadpis;
 
-console.log(recepty);
+
+
+
 nactiRecepty();
 
 
-//doplnění dalších receptů do seznamu z pole receptů
+//načtení do seznamu z pole receptů
 function nactiRecepty() {
+
+    let poziceReceptu = 0;
+    document.querySelector('#recept img').src = (recepty[poziceReceptu].img);
+    document.querySelector('#recept h3').innerHTML = recepty[poziceReceptu].nadpis;
 
 
     for (let i = 1; i < recepty.length; i++) {
 
-        let recept = document.createElement('div');
-        recept.id = 'recept';
-        recept.className = 'recept';
+        let novyRecept = document.createElement('div');
+        novyRecept.id = 'recept';
+        novyRecept.className = 'recept';
 
         let fotoReceptu = document.createElement('img');
         fotoReceptu.className = 'recept-obrazek';
@@ -59,35 +60,28 @@ function nactiRecepty() {
 
 
 
-        recept.appendChild(fotoReceptu);
-        recept.appendChild(nazevReceptu);
+        novyRecept.appendChild(fotoReceptu);
+        novyRecept.appendChild(nazevReceptu);
+        novyRecept.setAttribute('data-recept-index', i);
+        novyRecept.setAttribute('data-hodnoceni', recepty[i].hodnoceni);
+        novyRecept.setAttribute('data-kategorie', recepty[i].stitek);
+        document.querySelector('#recepty').appendChild(novyRecept);
 
-
-
-
-        document.querySelector('#recepty').appendChild(recept);
     }
 }
 
 
-let vybranyRecept = document.querySelectorAll('#recept');
+
+const recept = document.querySelectorAll('#recept');
 
 
-vybranyRecept.forEach((recept) => {
-    recept.addEventListener('click', zobrazRecept);
+recept.forEach((vybranyrecept) => {
+    vybranyrecept.addEventListener('click', function () {
+
+        console.log(vybranyrecept);
+
+    });
 });
-
-function zobrazRecept() {
-
-    console.log(this);
-
-}
-
-
-
-
-
-
 
 
 
@@ -103,7 +97,7 @@ function hledejRecept() {
 
     if (hledanyRecept === '') {
         alert('Vyhledávací pole je prázdné');
-        return;
+        //return
     }
 
     else {
