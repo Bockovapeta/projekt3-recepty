@@ -20,89 +20,11 @@ recept-hodnoceni, recept-nazev, recept-popis.
 
 
 
-//doplnění dalších receptů do seznamu z pole receptů
-
-
-
-let poziceReceptu = 0;
-document.querySelector('#recepty img').src = (recepty[poziceReceptu].img);
-document.querySelector('#recepty h3').innerHTML = recepty[poziceReceptu].nadpis;
 
 
 
 
-for (let i = 1; i < recepty.length; i++) {
-    poziceReceptu = poziceReceptu + 1;
-    let recept = document.createElement('div');
-    recept.id = 'recept';
-    recept.className = 'recept';
-
-    let fotoReceptu = document.createElement('img');
-    fotoReceptu.className = 'recept-obrazek';
-    fotoReceptu.src = recepty[poziceReceptu].img;
-    fotoReceptu.style.borderRadius = "5px";
-
-    let nazevReceptu = document.createElement('h3');
-    nazevReceptu.className = 'recept-info';
-    nazevReceptu.innerHTML = recepty[poziceReceptu].nadpis;
-    nazevReceptu.style.fontSize = "16px";
-
-
-
-    let pozice = document.createElement('p');
-    pozice.innerHTML = poziceReceptu;
-    pozice.style.display = 'none';
-    recept.appendChild(pozice);
-
-
-
-
-    recept.appendChild(fotoReceptu);
-    recept.appendChild(nazevReceptu);
-
-
-
-
-    document.querySelector('#recepty').appendChild(recept);
-
-
-
-
-
-
-
-}
-
-
-
-
-let vybranyRecept = document.querySelectorAll('#recept');
-
-
-vybranyRecept.forEach((recept) => {
-    recept.addEventListener('click', zobrazRecept);
-});
-
-
-
-
-
-
-
-function zobrazRecept() {
-    console.log(this);
-
-
-    // localStorage.this = JSON.parse(this);
-    // let vybrane = localStorage.this;
-    // console.log(vybrane);
-
-}
-
-
-
-
-/*
+// načtení prvního receptu do seznamu z pole receptů
 localStorage.recepty = JSON.stringify(recepty);
 let hodnota = localStorage.recepty;
 
@@ -114,10 +36,12 @@ document.querySelector('#recepty h3').innerHTML = recepty[poziceReceptu].nadpis;
 console.log(recepty);
 nactiRecepty();
 
+
+//doplnění dalších receptů do seznamu z pole receptů
 function nactiRecepty() {
 
 
-    for (let i = 0; i < recepty.length; i++) {
+    for (let i = 1; i < recepty.length; i++) {
 
         let recept = document.createElement('div');
         recept.id = 'recept';
@@ -145,6 +69,7 @@ function nactiRecepty() {
     }
 }
 
+
 let vybranyRecept = document.querySelectorAll('#recept');
 
 
@@ -158,54 +83,66 @@ function zobrazRecept() {
 
 }
 
-*/
 
 
 
 
-/*
-
-vybranyRecept.forEach((recept) => {
-    recept.addEventListener('click', zobrazRecept);
-});
-
-function zobrazRecept() {
-
-    console.log(hodnota);
-
-}
-*/
 
 
 
-/*
 
+// přidání funkce na tlačítko hledej
 let button = document.querySelector('button');
 button.onclick = hledejRecept;
+let input = document.querySelector('#hledat');
+
 
 function hledejRecept() {
 
-    let hledanyRecept = document.querySelector('input[type="text"]').value;
+    let hledanyRecept = input.value.toLowerCase();
 
-    console.log(hledanyRecept);
-
-}
-
-
-
-document.querySelector('input').addEventListener('change', filtrujRecept);
-
-function filtrujRecept() {
-    if (('input[type="text"]').value === recepty[poziceReceptu].nadpis) {
-        return true;
-
+    if (hledanyRecept === '') {
+        alert('Vyhledávací pole je prázdné');
+        return;
     }
+
     else {
-        //jinak vymaž recept z adresáře s recepty
-        return false;
+
+        console.log(hledanyRecept);
+        let nalezenyRecept = recepty.filter(recept => recept.nadpis.toLowerCase().includes(hledanyRecept))
+
+        console.log(nalezenyRecept);
+
+        smazRecepty();
+        function smazRecepty() {
+            for (k = 0; k < recepty.length; k++) {
+
+                document.querySelector('#recepty').removeChild(document.querySelector('.recept'));
+
+            }
+        }
+        console.log(nalezenyRecept);
+
+        for (i = 0; i <= nalezenyRecept.length; i++) {
+            let recept = document.createElement('div');
+            recept.id = 'recept';
+            recept.className = 'recept';
+
+            let fotoReceptu = document.createElement('img');
+            fotoReceptu.className = 'recept-obrazek';
+            fotoReceptu.src = nalezenyRecept[i].img;
+            fotoReceptu.style.borderRadius = "5px";
+
+            let nazevReceptu = document.createElement('h3');
+            nazevReceptu.className = 'recept-info';
+            nazevReceptu.innerHTML = nalezenyRecept[i].nadpis;
+            nazevReceptu.style.fontSize = "16px";
+
+            recept.appendChild(fotoReceptu);
+            recept.appendChild(nazevReceptu);
+
+            document.querySelector('#recepty').appendChild(recept);
+        }
     }
 }
 
-
-
-*/
