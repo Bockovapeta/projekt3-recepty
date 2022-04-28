@@ -59,10 +59,11 @@ function nactiRecepty() {
         nazevReceptu.style.fontSize = "16px";
 
 
-
         novyRecept.appendChild(fotoReceptu);
         novyRecept.appendChild(nazevReceptu);
         novyRecept.setAttribute('data-recept-index', i);
+
+
         novyRecept.setAttribute('data-hodnoceni', recepty[i].hodnoceni);
         novyRecept.setAttribute('data-kategorie', recepty[i].stitek);
         document.querySelector('#recepty').appendChild(novyRecept);
@@ -70,7 +71,7 @@ function nactiRecepty() {
     }
 }
 
-
+// funkce zobrazení kliknutého receptu
 
 const recept = document.querySelectorAll('#recept');
 
@@ -83,39 +84,73 @@ recept.forEach((vybranyrecept) => {
     });
 });
 
+// funkce pro smazání receptů
+
+function smazRecepty() {
+    for (k = 0; k < recepty.length; k++) {
+
+        document.querySelector('#recepty').removeChild(document.querySelector('.recept'));
+
+    }
+
+}
 
 
 // přidání funkce na tlačítko hledej
 let button = document.querySelector('button');
 button.onclick = hledejRecept;
 let input = document.querySelector('#hledat');
-
+let kategorie = document.querySelector('#kategorie');
+let razeni = document.querySelector('#razeni');
 
 function hledejRecept() {
 
     let hledanyRecept = input.value.toLowerCase();
+    let kategorieRecept = kategorie.value.toLowerCase();
+    let razeniRecept = razeni.value;
 
-    if (hledanyRecept === '') {
+    if ((hledanyRecept === '') && (kategorieRecept === '') && (razeniRecept === '')) {
         alert('Vyhledávací pole je prázdné');
         //return
     }
 
+    if ((hledanyRecept === '') && (kategorieRecept != '')) {
+        let kategorieReceptNalez = recepty.filter(recept => recept.kategorie.toLocaleLowerCase().includes(kategorieRecept));
+        smazRecepty();
+
+        console.log(kategorieReceptNalez);
+        for (j = 0; j <= kategorieReceptNalez.length; j++) {
+            let recept = document.createElement('div');
+            recept.id = 'recept';
+            recept.className = 'recept';
+
+            let fotoReceptu = document.createElement('img');
+            fotoReceptu.className = 'recept-obrazek';
+            fotoReceptu.src = kategorieReceptNalez[j].img;
+            fotoReceptu.style.borderRadius = "5px";
+
+            let nazevReceptu = document.createElement('h3');
+            nazevReceptu.className = 'recept-info';
+            nazevReceptu.innerHTML = kategorieReceptNalez[j].nadpis;
+            nazevReceptu.style.fontSize = "16px";
+
+            recept.appendChild(fotoReceptu);
+            recept.appendChild(nazevReceptu);
+
+            document.querySelector('#recepty').appendChild(recept);
+        }
+
+    }
+
     else {
-
         console.log(hledanyRecept);
-        let nalezenyRecept = recepty.filter(recept => recept.nadpis.toLowerCase().includes(hledanyRecept))
-
-        console.log(nalezenyRecept);
+        console.log(razeniRecept);
+        let nalezenyRecept = recepty.filter(recept => recept.nadpis.toLowerCase().includes(hledanyRecept));
 
         smazRecepty();
-        function smazRecepty() {
-            for (k = 0; k < recepty.length; k++) {
 
-                document.querySelector('#recepty').removeChild(document.querySelector('.recept'));
-
-            }
-        }
         console.log(nalezenyRecept);
+
 
         for (i = 0; i <= nalezenyRecept.length; i++) {
             let recept = document.createElement('div');
@@ -137,6 +172,8 @@ function hledejRecept() {
 
             document.querySelector('#recepty').appendChild(recept);
         }
+
+
     }
 }
 
