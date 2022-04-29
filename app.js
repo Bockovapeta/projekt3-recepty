@@ -28,9 +28,6 @@ recept-hodnoceni, recept-nazev, recept-popis.
 
 
 
-
-
-
 nactiRecepty();
 
 
@@ -58,7 +55,9 @@ function nactiRecepty() {
         novyRecept.appendChild(fotoReceptu);
         novyRecept.appendChild(nazevReceptu);
         novyRecept.setAttribute('data-recept-index', i);
-
+        novyRecept.setAttribute('data-img', recepty[i].img)
+        novyRecept.setAttribute('data-nadpis', recepty[i].nadpis)
+        novyRecept.setAttribute('data-popis', recepty[i].popis)
 
         novyRecept.setAttribute('data-hodnoceni', recepty[i].hodnoceni);
         novyRecept.setAttribute('data-kategorie', recepty[i].stitek);
@@ -66,6 +65,7 @@ function nactiRecepty() {
 
     }
 }
+
 
 
 // funkce zobrazení kliknutého receptu
@@ -76,12 +76,18 @@ recept.forEach((vybranyrecept) => {
 
         console.log(vybranyrecept);
         let index = vybranyrecept.dataset.receptIndex;
-        console.log(index);
-        document.querySelector('#recept-foto').src = recepty[index].img;
-        document.querySelector('#recept-kategorie').innerHTML = recepty[index].kategorie;
-        document.querySelector('#recept-hodnoceni').innerHTML = recepty[index].hodnoceni;
-        document.querySelector('#recept-nazev').innerHTML = recepty[index].nadpis;
-        document.querySelector('#recept-popis').innerHTML = recepty[index].popis;
+        let foto = vybranyrecept.dataset.img;
+        let nadpis = vybranyrecept.dataset.nadpis;
+        let popis = vybranyrecept.dataset.popis;
+        let hodnoceni = vybranyrecept.dataset.hodnoceni;
+        let kategorie = vybranyrecept.dataset.kategorie;
+
+        document.querySelector('#recept-foto').src = foto;
+        document.querySelector('#recept-kategorie').innerHTML = kategorie;
+        document.querySelector('#recept-hodnoceni').innerHTML = hodnoceni;
+        document.querySelector('#recept-nazev').innerHTML = nadpis;
+        document.querySelector('#recept-popis').innerHTML = popis;
+        localStorage.posledniRecept = vybranyrecept;
     });
 });
 
@@ -110,11 +116,9 @@ function hledejRecept() {
     let kategorieRecept = kategorie.value.toLowerCase();
     let razeniRecept = razeni.value;
 
-    if ((hledanyRecept === '') && (kategorieRecept === '') && (razeniRecept === '')) {
-        alert('Vyhledávací pole je prázdné');
-    }
 
-    else if ((hledanyRecept === '') && (kategorieRecept != '')) {
+
+    if ((razeniRecept != '') || (kategorieRecept != '')) {
         let kategorieReceptNalez = recepty.filter(recept => recept.kategorie.toLocaleLowerCase().includes(kategorieRecept));
         smazRecepty();
 
@@ -122,7 +126,10 @@ function hledejRecept() {
 
 
 
+
         for (j = 0; j <= kategorieReceptNalez.length; j++) {
+
+
             let recept = document.createElement('div');
             recept.id = 'recept';
             recept.className = 'recept';
@@ -141,11 +148,33 @@ function hledejRecept() {
             recept.appendChild(nazevReceptu);
 
             document.querySelector('#recepty').appendChild(recept);
+
             document.querySelector('#recept-foto').src = "";
             document.querySelector('#recept-kategorie').innerHTML = "";
             document.querySelector('#recept-hodnoceni').innerHTML = "";
             document.querySelector('#recept-nazev').innerHTML = "";
             document.querySelector('#recept-popis').innerHTML = "";
+
+
+
+
+        }
+
+
+        if (razeniRecept === 1) {
+
+            recepty.sort(function (a, b) {
+                return a.hodnoceni - b.hodnoceni;
+            });
+            console.log(recepty);
+        }
+
+
+        else if (razeniRecept === 2) {
+
+            recepty.sort(function (a, b) {
+                return b.hodnoceni - a.hodnoceni;
+            });
         }
 
 
@@ -153,22 +182,6 @@ function hledejRecept() {
 
     }
 
-    else if ((hledanyRecept === '') && (razeniRecept != '')) {
-
-
-
-        if (razeniRecept == 1) {
-
-            //pomocí sort
-        }
-
-
-        else if (razeniRecept == 2) {
-
-            // pomocí sort
-
-        }
-    }
 
 
     else {
@@ -208,3 +221,17 @@ function hledejRecept() {
 
 }
 
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if (property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a, b) {
+        /* next line works with strings and numbers, 
+         * and you may want to customize it to your needs
+         */
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
+}
